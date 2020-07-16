@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class=" black-80 tc pv4 avenir">
+  <a href="" class="bg-black-80 ba b--black dib pa3 w2 h2 br-100">
+    <svg class="white" data-icon="skull" viewBox="0 0 32 32" style="fill:currentcolor"><title>skull icon</title><path d="M16 0 C6 0 2 4 2 14 L2 22 L6 24 L6 30 L26 30 L26 24 L30 22 L30 14 C30 4 26 0 16 0 M9 12 A4.5 4.5 0 0 1 9 21 A4.5 4.5 0 0 1 9 12 M23 12 A4.5 4.5 0 0 1 23 21 A4.5 4.5 0 0 1 23 12"></path></svg>
+  </a>
+  <h1 class="mt2 mb0 baskerville i fw1 f1">Question History</h1>
+  <nav class="bt bb tc mw7 center mt4">
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-lightest-blue dib pa3 ph4-l" href="{% url 'list_questions' %}">My Questions</a>
+    <a class="f6 f5-l link bg-animate black-80 hover-bg-lightest-blue dib pa3 ph4-l" href="{% url 'add_question' %}">Create Question</a>
+   </nav>
+</header>
+
+<div class="mt2 mb0 f3 fw4 ttu tracked tc mw7 center mt4">
+
+    {% if question.title %}
+    <div class="flex ">
+    <div><a style="text-decoration:none" class="black-90 mt2 mb0 f3 fw4 ttu tracked" href="{% url 'show_question' pk=question.pk %}"><b>Title:</b> {{ question.title }}</a><br> {{ question.body }} <br> By: {{question.author}}</div>
+    </div>
+    </div>
+    {% endif %}
+
+
+    <h3 class="mt-5">Responses:</h3>
+
+    <ul style='list-style-type: none'>
+        {% for answer in answers %}
+        <a  class="black-90 mt2 mb0 f5 fw4 ttu tracked" href="{% url 'add_answer' pk=question.pk %}"><li>{{ answer }}</li></a> 
+        {% endfor %}
+        <a style="text-decoration:none" class="btn btn-outline-light mt-2 mt2 mb0 f6 fw4 ttu tracked" href="{% url 'add_answer' pk=question.pk%}">add another answer</a>
+    </ul>
+</div>
+<div class="tc" > 
+    <p>
+        <i class="fa fa-trash"></i>
+        <a style="text-decoration:none" class="black-90" href="{% url 'delete_question' pk=question.pk %}">delete question</a>
+    </p>
+    <p>
+        <i class="fa fa-arrow-left"></i>
+        <a class="black-90" style="text-decoration:none" href="{% url 'list_questions' %}">back to all questions</a>
+    </p>
+</div>
+
+{% endblock %}
