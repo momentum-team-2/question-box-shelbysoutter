@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'js/question.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 <header class=" black-80 tc pv4 avenir">
@@ -12,21 +17,32 @@
    </nav>
 </header>
 
-<div class="mt2 mb0 f3 fw4 ttu tracked tc mw7 center mt4">
+<div class="mt2 mb0 f3 fw4 ttu tracked mw7  mt4">
 
     {% if question.title %}
-    <div class="flex ">
-    <div><a style="text-decoration:none" class="black-90 mt2 mb0 f3 fw4 ttu tracked" href="{% url 'show_question' pk=question.pk %}"><b>Title:</b> {{ question.title }}</a><br> {{ question.body }} <br> By: {{question.author}}</div>
+    <div>
+    <div><a style="text-decoration:none" class="black-90" href="{% url 'show_question' pk=question.pk %}"><b>Question: </b>{{ question.body }}</a><a id="toggle-favorite" data-question-id='{{ question.pk }}' class="no-underline pointer dib grow">
+        {% if user_favorite %}
+        &#9733;
+        {% else %}
+        &#9734;
+        {% endif %}
+    </a>
+        <br>By: {{question.author}}</div>
     </div>
     </div>
     {% endif %}
+
 
 
     <h3 class="mt-5">Responses:</h3>
 
     <ul style='list-style-type: none'>
         {% for answer in answers %}
-        <a  class="black-90 mt2 mb0 f5 fw4 ttu tracked" href="{% url 'add_answer' pk=question.pk %}"><li>{{ answer }}</li></a> 
+        <a  class="black-90 mt2 mb0 f5 fw4 ttu tracked" href="{% url 'add_answer' pk=question.pk %}"><li>{{ answer.answer }}</li></a> 
+        <li>Posted by: {{ answer.author }} </li>
+        <li>{{ answer.created }}</li>
+        <br>
         {% endfor %}
         <a style="text-decoration:none" class="btn btn-outline-light mt-2 mt2 mb0 f6 fw4 ttu tracked" href="{% url 'add_answer' pk=question.pk%}">add another answer</a>
     </ul>

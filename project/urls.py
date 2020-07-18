@@ -25,6 +25,7 @@ urlpatterns = [
     path('questions/<int:pk>/<int:month>/<int:day>/<int:year>/add_answer', question_views.add_answer, name='add_answer'),
     path('questions/<int:pk>/add_answer', question_views.add_answer, name='add_answer'),
     path('questions/<int:pk>/edit/', question_views.edit_question, name='edit_question'),
+    path('questions/<int:pk>/favorite/', question_views.favorite_question, name='favorite_question'),
     path('questions/<int:pk>/delete/', question_views.delete_question, name='delete_question'),
     path('questions/<int:pk>/', question_views.show_question, name='show_question'),
     path('admin/', admin.site.urls),

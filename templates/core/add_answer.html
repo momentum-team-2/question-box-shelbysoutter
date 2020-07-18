@@ -15,7 +15,7 @@
 <div class="tc mw7 center mt4">
     <h2 class="mt2 mb0 f3 fw4 ttu tracked">Add response to: '{{ question.title }}: {{question.body}}' <br> By: {{question.author}}</h2>
     <div class="mt2 mb0 f6 fw4 ttu tracked">
-        <form action="{% url 'add_question' year=date.year month=date.month day=date.day pk=question.pk %}" method="POST">
+        <form action="{% url 'add_answer' year=date.year month=date.month day=date.day pk=question.pk %}" method="POST">
         {% csrf_token %}
         {{form.as_p}}
     </div>
@@ -24,8 +24,8 @@
         <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-pink mt2 mb0 f6 fw4 ttu tracked" type="submit">add response</button>
     </div>
         <p class=''>
-            <a style="text-decoration:none" class="black-90 mt2 mb0 f6 fw4 ttu tracked" href="{% url 'add_record' year=prev_day.year month=prev_day.month day=prev_day.day pk=question.pk%}">{{ prev_day }}</a> |
-            <a style="text-decoration:none" class="black-90 mt2 mb0 f6 fw4 ttu tracked" href="{% url 'add_record' year=next_day.year month=next_day.month day=next_day.day pk=question.pk%}">{{ next_day }}</a>
+            <a style="text-decoration:none" class="black-90 mt2 mb0 f6 fw4 ttu tracked" href="{% url 'add_answer' year=prev_day.year month=prev_day.month day=prev_day.day pk=question.pk%}">{{ prev_day }}</a> |
+            <a style="text-decoration:none" class="black-90 mt2 mb0 f6 fw4 ttu tracked" href="{% url 'add_answer' year=next_day.year month=next_day.month day=next_day.day pk=question.pk%}">{{ next_day }}</a>
         </p>
         </form>
 </div>

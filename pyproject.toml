@@ -15,6 +15,7 @@ psycopg2 = "^2.8.5"
 django-heroku = "^0.3.1"
 gunicorn = "^20.0.4"
 django-registration-redux = "^2.8"
+django-markdownify = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 

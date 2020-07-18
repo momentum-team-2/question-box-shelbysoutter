@@ -4,6 +4,8 @@ from .models import Question, Answer
 from .forms import QuestionForm, AnswerForm
 from django.contrib.auth.decorators import login_required 
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 
 
@@ -24,8 +26,9 @@ def list_questions(request):
 def show_question(request, pk):
     question = get_object_or_404(request.user.questions, pk=pk)
     form = QuestionForm()
-    answers = question.answers.order_by('-id')
-    return render(request, 'core/show_question.html', {'question': question, 'pk': pk, 'form': form, 'answers': answers})
+    answers = question.answers.order_by('created')
+    user_favorite = request.user.is_favorite_question(question)
+    return render(request, 'core/show_question.html', {'question': question, 'pk': pk, 'form': form, 'answers': answers, 'user_favorite': user_favorite})
 
 
 @login_required
@@ -45,7 +48,7 @@ def add_question(request):
 @login_required
 def add_answer(request, pk, month=None, day=None, year=None):
     question = get_object_or_404(request.user.questions, pk=pk)
-    answers = question.answers.order_by('-recorded_on')
+    answers = question.answers.order_by('created')
     if year is None:
         answer_date = datetime.date.today()
     else:
@@ -53,10 +56,10 @@ def add_answer(request, pk, month=None, day=None, year=None):
     
     next_day = answer_date + datetime.timedelta(days=1)
     prev_day = answer_date - datetime.timedelta(days=1)
-    answer = question.answers.filter(answered_on=answer_date).first()
+    answer = question.answers.filter(created=answer_date).first()
 
     if answer is None:
-        answer = answer(question=question, answered_on=answer_date)
+        answer = Answer(question=question, created=answer_date)
 
     if request.method == 'POST':
         form = AnswerForm(instance=answer, data=request.POST)
@@ -92,3 +95,16 @@ def delete_question(request, pk):
         return redirect(to='list_questions')
     
     return render(request, 'core/delete_question.html', {'question': question})
+
+
+@login_required
+@csrf_exempt
+@require_POST
+def favorite_question(request, pk):
+    question = get_object_or_404(request.user.questions, pk=pk)
+    if question in request.user.favorite_question.all():
+        request.user.favorite_question.remove(question)
+        return JsonResponse({'favorite': False})
+    else:
+        request.user.favorite_question.add(question)
+        return JsonResponse({'favorite': True})
