@@ -17,22 +17,21 @@
    </nav>
 </header>
 
-<div class="mt2 mb0 f3 fw4 ttu tracked mw7  mt4">
+<div class="mt2 mb0 f3 fw4 ttu tracked mw7  mt4" id='parent-favorite'>
 
     {% if question.title %}
-    <div>
-    <div><a style="text-decoration:none" class="black-90" href="{% url 'show_question' pk=question.pk %}"><b>Question: </b>{{ question.body }}</a><a id="toggle-favorite" data-question-id='{{ question.pk }}' class="no-underline pointer dib grow">
+
+    <a style="text-decoration:none" class="black-90" href="{% url 'show_question' pk=question.pk %}"><b>Question: </b>{{ question.body }}</a>
+    <a id="toggle-favorite" data-question-id = "{{ question.pk }}" class="no-underline pointer dib grow">
         {% if user_favorite %}
         &#9733;
         {% else %}
         &#9734;
         {% endif %}
     </a>
-        <br>By: {{question.author}}</div>
-    </div>
-    </div>
-    {% endif %}
+    <br>By: {{question.author}}</div>
 
+    {% endif %}
 
 
     <h3 class="mt-5">Responses:</h3>
@@ -47,6 +46,7 @@
         <a style="text-decoration:none" class="btn btn-outline-light mt-2 mt2 mb0 f6 fw4 ttu tracked" href="{% url 'add_answer' pk=question.pk%}">add another answer</a>
     </ul>
 </div>
+
 <div class="tc" > 
     <p>
         <i class="fa fa-trash"></i>
@@ -57,5 +57,25 @@
         <a class="black-90" style="text-decoration:none" href="{% url 'list_questions' %}">back to all questions</a>
     </p>
 </div>
+
+<script>
+    const toggleFavoriteLink = document.querySelector("#toggle-favorite")
+    toggleFavoriteLink.addEventListener('click', function (e) {
+      e.preventDefault()
+      const questionId = toggleFavoriteLink.dataset['questionId']
+      fetch(`/questions/${questionId}/favorite/`, {
+          method: 'POST'
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.favorite) {
+              toggleFavoriteLink.innerHTML = '&#9733;'
+        } else {
+      toggleFavoriteLink.innerHTML = '&#9734;'
+        }
+      })
+  
+    })
+  </script>
 
 {% endblock %}
