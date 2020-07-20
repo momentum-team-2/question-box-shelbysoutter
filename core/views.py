@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Question, Answer
+from .models import Question, Answer, search_questions_for_user, get_question_for_user
 from .forms import QuestionForm, AnswerForm
 from django.contrib.auth.decorators import login_required 
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+from django.db.models import Count, Min, Q
 
 
 # Create your views here.
@@ -108,3 +109,13 @@ def favorite_question(request, pk):
     else:
         request.user.favorite_question.add(question)
         return JsonResponse({'favorite': True})
+
+
+def search_questions(request):
+    query = request.GET.get('q')
+    if query is not None:
+        questions = Question.objects.search(query).for_user(request.user).public()
+    else:
+        questions = None
+    
+    return render(request, 'core/search.html', {'questions': questions, 'query': query or ""})

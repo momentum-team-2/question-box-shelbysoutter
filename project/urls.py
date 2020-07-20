@@ -28,6 +28,7 @@ urlpatterns = [
     path('questions/<int:pk>/favorite/', question_views.favorite_question, name='favorite_question'),
     path('questions/<int:pk>/delete/', question_views.delete_question, name='delete_question'),
     path('questions/<int:pk>/', question_views.show_question, name='show_question'),
+    path('questions/search/', question_views.search_questions, name='search_questions'),
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls')),
 ]
