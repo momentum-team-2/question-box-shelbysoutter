@@ -18,6 +18,8 @@
   <p>
     <button class="mt2 mb0 f6 fw4 ttu tracked oh3 f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-pink" type="submit">Search</button>
   </p>
+  {% csrf_token %}
+  {{ form.as_p }}
 </form>
 
 {% if questions is not None %}

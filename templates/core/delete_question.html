@@ -17,6 +17,7 @@
 <div class="mt2 mb0 f3 fw4 ttu tracked tc mw7 center mt4">
   <form action="{% url 'delete_question' pk=question.pk %}" method="POST">
     {% csrf_token %}
+    {{ form.as_p }}
     <p>Are you sure you want to delete '{{ question.title }}: {{ question.body }}'?</p>
     <div>
         <i class="fa fa-trash"></i>

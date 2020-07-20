@@ -14,7 +14,7 @@ from django.db.models import Count, Min, Q
 def home(request):
     if request.user.is_authenticated:
         return redirect('list_questions')
-    return render(render, 'core/home.html')
+    return render(request, 'core/home.html')
 
 
 @login_required
