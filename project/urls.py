@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
 from core import views as question_views
+from django.conf.urls import include
 
 urlpatterns = [
     path('', question_views.home, name='home'),
@@ -31,6 +32,12 @@ urlpatterns = [
     path('questions/search/', question_views.search_questions, name='search_questions'),
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls')),
+    path('questions/api/', include('api.urls')),
+]
+
+
+urlpatterns += [
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:

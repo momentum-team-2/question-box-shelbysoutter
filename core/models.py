@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import User
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector
 from django.conf import settings
