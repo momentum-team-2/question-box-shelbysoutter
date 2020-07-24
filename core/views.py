@@ -47,30 +47,21 @@ def add_question(request):
 
 
 @login_required
-def add_answer(request, pk, month=None, day=None, year=None):
+def add_answer(request, pk):
     question = get_object_or_404(request.user.questions, pk=pk)
-    answers = question.answers.order_by('created')
-    if year is None:
-        answer_date = datetime.date.today()
-    else:
-        answer_date = datetime.date(year, month, day)
-    
-    next_day = answer_date + datetime.timedelta(days=1)
-    prev_day = answer_date - datetime.timedelta(days=1)
-    answer = question.answers.filter(created=answer_date).first()
-
-    if answer is None:
-        answer = Answer(question=question, created=answer_date)
 
     if request.method == 'POST':
-        form = AnswerForm(instance=answer, data=request.POST)
+        form = AnswerForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            answer = form.instance
+            answer.author = request.user
+            answer.question = question
+            answer.save()
             return redirect(to='show_question', pk=pk)
     else:
-        form = AnswerForm(instance=answer)
+        form = AnswerForm()
 
-    return render(request, 'core/add_answer.html', {'form': form, 'question': question, 'date': answer_date, 'next_day': next_day, 'prev_day': prev_day, 'answer': answer,})
+    return render(request, 'core/add_answer.html', {'form': form, 'question': question})
 
 
 @login_required

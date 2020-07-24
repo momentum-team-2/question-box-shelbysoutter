@@ -32,7 +32,7 @@ urlpatterns = [
     path('questions/search/', question_views.search_questions, name='search_questions'),
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls')),
-    path('questions/api/', include('api.urls')),
+    path('api/', include('api.urls')),
 ]
 
 
